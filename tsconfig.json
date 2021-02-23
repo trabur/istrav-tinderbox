@@ -1,0 +1,17 @@
+{
+   "compilerOptions": {
+      "lib": [
+         "es6",
+         "DOM",
+      ],
+      "target": "ES6",
+      "module": "commonjs",
+      "isolatedModules": true,
+      "outDir": "dist",
+      "resolveJsonModule": true,
+      "emitDecoratorMetadata": true,
+      "esModuleInterop": true,
+      "experimentalDecorators": true,
+      "sourceMap": true
+   }
+ }
