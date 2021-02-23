@@ -2,6 +2,7 @@
 import express from "express"
 
 // endpoints
+import projects from "./projects/server"
 import stacks from "./stacks/server"
 
 // load "process.env" params from a .env file
@@ -16,5 +17,6 @@ if (!shell.which('pulumi')) {
 }
 
 export default function (app: any) {
+  projects(app, shell)
   stacks(app, shell)
 }

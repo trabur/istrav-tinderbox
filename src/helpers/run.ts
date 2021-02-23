@@ -5,16 +5,16 @@ export default {
     console.log('running: ', command)
     return new Promise(function(resolve, reject) {
       function callback (error: any, stdout: any, stderr: any) {
-        if (error) {
-          reject(error);
-          return;
-        }
-  
         if (stderr) {
           reject(stderr);
           return;
         }
-  
+        
+        if (error) {
+          reject(error);
+          return;
+        }
+        
         resolve(stdout);
       }
       childProccess.exec(command, callback)

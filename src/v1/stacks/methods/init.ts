@@ -9,7 +9,7 @@ export default function (run: any, shell: any) {
     let stackName = es.arguements.stackName
 
     // make directory if not exists
-    let location = `/Users/travisburandt/Pulumi/stacks/${folder}`
+    let location = `~/Pulumi/${folder}`
     shell.mkdir('-p', location)
 
     // preform
