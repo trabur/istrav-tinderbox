@@ -38,7 +38,7 @@ const stackscript = new linode.StackScript(`istrav:::${pulumi.getStack()}`, {
 const linodeInstance = new linode.Instance(`istrav:::${pulumi.getStack()}`, {
   type: "g6-nanode-1",
   // rootPass: '',
-  stackscriptData: stackscript.script,
+  stackscriptData: [stackscript.script],
   image: debian9,
   region: "us-east",
   // Include all "LISH" registered SSH Keys
