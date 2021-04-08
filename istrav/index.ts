@@ -59,10 +59,18 @@ const fooNetworkInterface = new aws.ec2.NetworkInterface(`istrav-networkInterfac
   },
 })
 
+const group = new aws.ec2.SecurityGroup("istrav-securityGroup:::${pulumi.getStack()}", {
+  ingress: [
+    { protocol: "tcp", fromPort: 22, toPort: 22, cidrBlocks: ["0.0.0.0/0"] },
+    { protocol: "tcp", fromPort: 80, toPort: 80, cidrBlocks: ["0.0.0.0/0"] },
+  ],
+})
+
 const fooInstance = new aws.ec2.Instance(`istrav-instance:::${pulumi.getStack()}`, {
   ami: ami,
   instanceType: instanceType,
   userData: startupScript,
+  vpcSecurityGroupIds: [ group.id ],
   networkInterfaces: [{
     networkInterfaceId: fooNetworkInterface.id,
     deviceIndex: 0,
