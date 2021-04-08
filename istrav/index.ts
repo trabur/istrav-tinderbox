@@ -75,6 +75,7 @@ const fooInstance = new aws.ec2.Instance(`istrav-instance:::${pulumi.getStack()}
   instanceType: instanceType,
   userData: startupScript,
   vpcSecurityGroupIds: [ group.id ],
+  keyName: 'istrav'
   // networkInterfaces: [{
   //   networkInterfaceId: fooNetworkInterface.id,
   //   deviceIndex: 0,
