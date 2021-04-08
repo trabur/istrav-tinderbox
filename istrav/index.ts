@@ -4,10 +4,10 @@ import * as aws from "@pulumi/aws"
 let config = new pulumi.Config()
 let region = config.require("aws:region")
 console.log('aws:region', region)
-let instanceCount = config.getNumber("instanceCount") || 1
-console.log('instanceCount', instanceCount)
-let instanceType = config.require("instanceType") || 't2.micro'
-console.log('instanceType', instanceType)
+let instanceCount = config.getNumber("istrav:instanceCount") || 1
+console.log('istrav:instanceCount', instanceCount)
+let instanceType = config.require("istrav:instanceType") || 't2.micro'
+console.log('istrav:instanceType', instanceType)
 
 const debian9 = "linode/debian9"
 const startupScript = `#!/bin/bash
