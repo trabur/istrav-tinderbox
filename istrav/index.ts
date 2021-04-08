@@ -42,22 +42,22 @@ const myVpc = new aws.ec2.Vpc(`istrav-vpc:::${pulumi.getStack()}`, {
   },
 })
 
-const mySubnet = new aws.ec2.Subnet(`istrav-subnet:::${pulumi.getStack()}`, {
-  vpcId: myVpc.id,
-  cidrBlock: "172.16.10.0/24",
-  availabilityZone: zone,
-  tags: {
-    Name: "istrav",
-  },
-})
+// const mySubnet = new aws.ec2.Subnet(`istrav-subnet:::${pulumi.getStack()}`, {
+//   vpcId: myVpc.id,
+//   cidrBlock: "172.16.10.0/24",
+//   availabilityZone: zone,
+//   tags: {
+//     Name: "istrav",
+//   },
+// })
 
-const fooNetworkInterface = new aws.ec2.NetworkInterface(`istrav-networkInterface:::${pulumi.getStack()}`, {
-  subnetId: mySubnet.id,
-  privateIps: ["172.16.10.100"],
-  tags: {
-    Name: "istrav",
-  },
-})
+// const fooNetworkInterface = new aws.ec2.NetworkInterface(`istrav-networkInterface:::${pulumi.getStack()}`, {
+//   subnetId: mySubnet.id,
+//   privateIps: ["172.16.10.100"],
+//   tags: {
+//     Name: "istrav",
+//   },
+// })
 
 const group = new aws.ec2.SecurityGroup(`istrav-securityGroup:::${pulumi.getStack()}`, {
   vpcId: myVpc.id,
@@ -77,10 +77,10 @@ const fooInstance = new aws.ec2.Instance(`istrav-instance:::${pulumi.getStack()}
   instanceType: instanceType,
   userData: startupScript,
   vpcSecurityGroupIds: [ group.id ],
-  networkInterfaces: [{
-    networkInterfaceId: fooNetworkInterface.id,
-    deviceIndex: 0,
-  }],
+  // networkInterfaces: [{
+  //   networkInterfaceId: fooNetworkInterface.id,
+  //   deviceIndex: 0,
+  // }],
   creditSpecification: {
     cpuCredits: "unlimited",
   },
