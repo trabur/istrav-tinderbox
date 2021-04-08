@@ -7,6 +7,9 @@ jobs:
   up:
     name: Update
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./app
     steps:
       - uses: actions/checkout@v2
       - name: Install pulumi
@@ -16,10 +19,8 @@ jobs:
         with:
           node-version: 14.x
       - name: Install 
-        working-directory: ./istrav
         run: npm install
       - uses: pulumi/actions@v2
-        working-directory: ./istrav
         with:
           command: up
           stack-name: dev
