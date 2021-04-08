@@ -27,7 +27,6 @@ sudo service nginx restart
 `
 
 const web = new linode.Instance(`istrav:::${pulumi.getStack()}`, {
-  authorizedKeys: ["ssh-rsa AAAA...Gw== user@example.local"],
   group: "foo",
   image: "linode/ubuntu18.04",
   label: "simple_instance",
