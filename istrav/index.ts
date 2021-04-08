@@ -58,7 +58,7 @@ const fooNetworkInterface = new aws.ec2.NetworkInterface(`istrav-networkInterfac
 })
 
 const fooInstance = new aws.ec2.Instance(`istrav-instance:::${pulumi.getStack()}`, {
-  ami: "ami-01e7ca2ef94a0ae86", // ubuntu server 20.04 LTS
+  ami: "ami-05d72852800cbf29e", // Amazon Linux 2
   instanceType: instanceType,
   userData: startupScript,
   networkInterfaces: [{
