@@ -3,7 +3,7 @@ import * as digitalocean from "@pulumi/digitalocean"
 import * as pulumi from "@pulumi/pulumi"
 
 const dropletCount = 2
-const region = digitalocean.Regions.NYC1
+const region = digitalocean.Regions.NYC3
 
 const dropletTypeTag = new digitalocean.Tag(`istrav-${pulumi.getStack()}`)
 const userData = `
