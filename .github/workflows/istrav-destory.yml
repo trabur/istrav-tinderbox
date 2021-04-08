@@ -1,11 +1,7 @@
-name: PulumiUp
-on:
-  push:
-    branches:
-      - master
+name: PulumiDestory
 jobs:
-  up:
-    name: Update
+  destroy:
+    name: Delete
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -23,7 +19,7 @@ jobs:
       - uses: pulumi/actions@v2
         with:
           work-dir: ./istrav
-          command: up
+          command: destory
           stack-name: prod
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
