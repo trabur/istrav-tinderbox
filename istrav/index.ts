@@ -13,8 +13,10 @@ console.log('istrav:ami', ami)
 
 const startupScript = `#!/bin/bash
 sudo apt-get update
+sudo apt-get install ec2-instance-connect
 sudo apt-get install -y nginx
 sudo ufw allow 'Nginx HTTP'
+sudo ufw allow ssh
 sudo ufw enable
 
 echo "server {
