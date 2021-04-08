@@ -10,6 +10,10 @@ on:
         description: 'Region Id'
         required: true
         default: 'us-east-1'
+      zoneId:
+        description: 'Zone Id'
+        required: true
+        default: 'us-east-1a'
       instanceCount:
         description: 'Instance Count'
         required: true
@@ -39,7 +43,7 @@ jobs:
         run: | 
           pulumi stack select ${{ github.event.inputs.stackId }}
           pulumi config set aws:region ${{ github.event.inputs.regionId }}
-          pulumi config set istrav:region ${{ github.event.inputs.regionId }}
+          pulumi config set istrav:zone ${{ github.event.inputs.zoneId }}
           pulumi config set istrav:instanceCount ${{ github.event.inputs.instanceCount }}
           pulumi config set istrav:instanceType ${{ github.event.inputs.instanceType }}
         env:

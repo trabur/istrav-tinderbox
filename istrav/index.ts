@@ -2,8 +2,10 @@ import * as pulumi from "@pulumi/pulumi"
 import * as aws from "@pulumi/aws"
 
 let config = new pulumi.Config()
-let region = config.require("region") || 'us-east-1'
+let region = config.require("aws:region") || 'us-east-1'
 console.log('istrav:region', region)
+let zone = config.require("zone") || 'us-east-1a'
+console.log('istrav:zone', zone)
 let instanceCount = config.getNumber("instanceCount") || 1
 console.log('istrav:instanceCount', instanceCount)
 let instanceType = config.require("instanceType") || 't2.micro'
@@ -43,7 +45,7 @@ const myVpc = new aws.ec2.Vpc(`istrav-vpc:::${pulumi.getStack()}`, {
 const mySubnet = new aws.ec2.Subnet(`istrav-subnet:::${pulumi.getStack()}`, {
   vpcId: myVpc.id,
   cidrBlock: "172.16.10.0/24",
-  availabilityZone: region,
+  availabilityZone: zone,
   tags: {
     Name: "istrav",
   },
