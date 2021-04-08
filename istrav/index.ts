@@ -18,7 +18,7 @@ for (let i = 0; i < dropletCount; i++) {
     image: "ubuntu-18-04-x64",
     region: region,
     privateNetworking: true,
-    size: digitalocean.DropletSlugs.Droplet2GB,
+    size: digitalocean.DropletSlugs.DropletS1VCPU1GB,
     tags: [nameTag.id, dropletTypeTag.id],
     userData: userData,
   }))
