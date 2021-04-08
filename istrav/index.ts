@@ -2,8 +2,6 @@ import * as pulumi from "@pulumi/pulumi"
 import * as aws from "@pulumi/aws"
 
 let config = new pulumi.Config()
-let region = config.require("aws:region") || 'us-east-1'
-console.log('istrav:region', region)
 let zone = config.require("zone") || 'us-east-1a'
 console.log('istrav:zone', zone)
 let instanceCount = config.getNumber("instanceCount") || 1
