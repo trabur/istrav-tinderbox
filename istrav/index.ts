@@ -11,7 +11,6 @@ console.log('istrav:instanceType', instanceType)
 let ami = config.require("ami") || 'ami-042e8287309f5df03' // Ubuntu Server 20.04 LTS // for us-east-1
 console.log('istrav:ami', ami)
 
-const debian9 = "linode/debian9"
 const startupScript = `#!/bin/bash
 sudo apt-get update
 sudo apt-get install -y nginx
@@ -35,12 +34,12 @@ echo "server {
 sudo service nginx restart
 `
 
-const myVpc = new aws.ec2.Vpc(`istrav-vpc:::${pulumi.getStack()}`, {
-  cidrBlock: "172.16.0.0/16",
-  tags: {
-    Name: "istrav",
-  },
-})
+// const myVpc = new aws.ec2.Vpc(`istrav-vpc:::${pulumi.getStack()}`, {
+//   cidrBlock: "172.16.0.0/16",
+//   tags: {
+//     Name: "istrav",
+//   },
+// })
 
 // const mySubnet = new aws.ec2.Subnet(`istrav-subnet:::${pulumi.getStack()}`, {
 //   vpcId: myVpc.id,
@@ -60,7 +59,6 @@ const myVpc = new aws.ec2.Vpc(`istrav-vpc:::${pulumi.getStack()}`, {
 // })
 
 const group = new aws.ec2.SecurityGroup(`istrav-securityGroup:::${pulumi.getStack()}`, {
-  vpcId: myVpc.id,
   ingress: [
     { protocol: "tcp", fromPort: 22, toPort: 22, cidrBlocks: ["0.0.0.0/0"] },
     { protocol: "tcp", fromPort: 80, toPort: 80, cidrBlocks: ["0.0.0.0/0"] },
@@ -81,9 +79,6 @@ const fooInstance = new aws.ec2.Instance(`istrav-instance:::${pulumi.getStack()}
   //   networkInterfaceId: fooNetworkInterface.id,
   //   deviceIndex: 0,
   // }],
-  creditSpecification: {
-    cpuCredits: "unlimited",
-  },
 })
 
 export const ip = fooInstance.publicIp
