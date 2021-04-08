@@ -38,6 +38,7 @@ const stackscript = new linode.StackScript(`istrav:::${pulumi.getStack()}`, {
 const linodeInstance = new linode.Instance(`istrav:::${pulumi.getStack()}`, {
   type: "g6-nanode-1",
   // rootPass: '',
+  stackscriptId: Number(stackscript.id),
   stackscriptData: {
     id: stackscript.id,
   },
