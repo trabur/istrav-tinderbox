@@ -3,8 +3,7 @@ import * as linode from "@pulumi/linode"
 import * as pulumi from "@pulumi/pulumi"
 
 const debian9 = "linode/debian9"
-const startupScript = `
-#!/bin/bash
+const startupScript = `#!/bin/bash
 sudo apt-get update
 sudo apt-get install -y nginx
 sudo ufw allow 'Nginx HTTP'
