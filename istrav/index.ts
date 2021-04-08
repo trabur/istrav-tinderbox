@@ -1,42 +1,44 @@
 
-import * as digitalocean from "@pulumi/digitalocean"
+import * as linode from "@pulumi/linode"
 import * as pulumi from "@pulumi/pulumi"
 
-const dropletCount = 2
-const region = digitalocean.Regions.NYC3
-
 const userData = `
-  #!/bin/bash
-  sudo apt-get update
-  sudo apt-get install -y nginx
-  sudo ufw allow 'Nginx HTTP'
-  sudo ufw enable
-  
-  echo "server {
-    listen       80;
-    server_name  localhost;
-  
-    location / {
-      proxy_pass http://localhost:3000;
-      proxy_http_version 1.1;
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection 'upgrade';
-      proxy_set_header Host $host;
-      proxy_cache_bypass $http_upgrade;
-    }
-  }" >> '/etc/nginx/sites-available/default'
+#!/bin/bash
+sudo apt-get update
+sudo apt-get install -y nginx
+sudo ufw allow 'Nginx HTTP'
+sudo ufw enable
 
-  sudo service nginx restart
-  `
+echo "server {
+  listen       80;
+  server_name  localhost;
 
-const nameTag = new digitalocean.Tag(`istrav:::${pulumi.getStack()}`)
-const droplet = new digitalocean.Droplet(`istrav:::${pulumi.getStack()}`, {
-  image: "ubuntu-18-04-x64",
-  region: region,
-  privateNetworking: true,
-  size: digitalocean.DropletSlugs.DropletS1VCPU1GB,
-  tags: [nameTag.id],
-  userData: userData,
-})
+  location / {
+    proxy_pass http://localhost:3000;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+  }
+}" >> '/etc/nginx/sites-available/default'
 
-export const ip = droplet.ipv4Address
+sudo service nginx restart
+`
+
+const web = new linode.Instance(`istrav:::${pulumi.getStack()}`, {
+  authorizedKeys: ["ssh-rsa AAAA...Gw== user@example.local"],
+  group: "foo",
+  image: "linode/ubuntu18.04",
+  label: "simple_instance",
+  privateIp: true,
+  region: "us-central",
+  rootPass: "Furlong5280",
+  swapSize: 256,
+  tags: ["istrav"],
+  type: "g6-nanode-1",
+  stackscriptId: 1,
+  stackscriptData: { key: userData },
+});
+
+export const ip = web.ipAddress

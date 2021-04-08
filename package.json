@@ -1,4 +1,7 @@
 {
   "name": "istrav-tinderbox",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "dependencies": {
+    "@pulumi/linode": "^2.10.1"
+  }
 }

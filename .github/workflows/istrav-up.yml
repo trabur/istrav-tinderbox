@@ -31,3 +31,5 @@ jobs:
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
           DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+          LINODE_TOKEN: ${{ secrets.LINODE_TOKEN }}
+          
