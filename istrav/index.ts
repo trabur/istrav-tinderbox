@@ -13,12 +13,12 @@ const userData = `
 const droplets = []
 
 for (let i = 0; i < dropletCount; i++) {
-  const nameTag = new digitalocean.Tag(`web-${i}`);
-  droplets.push(new digitalocean.Droplet(`web-${i}`, {
+  const nameTag = new digitalocean.Tag(`server-${i}`);
+  droplets.push(new digitalocean.Droplet(`server-${i}`, {
     image: "ubuntu-18-04-x64",
     region: region,
     privateNetworking: true,
-    size: digitalocean.DropletSlugs.Droplet512mb,
+    size: digitalocean.DropletSlugs.Droplet1GB,
     tags: [nameTag.id, dropletTypeTag.id],
     userData: userData,
   }))
