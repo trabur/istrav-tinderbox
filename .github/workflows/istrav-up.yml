@@ -6,6 +6,10 @@ on:
         description: 'Stack Id'     
         required: true
         default: 'prod'
+      regionId:
+        description: 'Region Id'     
+        required: true
+        default: 'us-east-1'
 jobs:
   up:
     name: Update
@@ -23,6 +27,12 @@ jobs:
           node-version: 14.x
       - name: Install 
         run: npm install
+      - name: AWS config
+        run: pulumi config set aws:region ${{ github.event.inputs.regionId }}
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - uses: pulumi/actions@v2
         with:
           work-dir: ./istrav
