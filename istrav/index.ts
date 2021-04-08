@@ -29,39 +29,23 @@ sudo service nginx restart
 
 const profile = pulumi.output(linode.getProfile({ async: true }));
 
-const stackscript = new linode.StackScript("istrav", {
+const stackscript = new linode.StackScript(`istrav:::${pulumi.getStack()}`, {
   label: "istrav",
   script: startupScript,
   description: "nginx with a node.js/express API",
   images: [debian9],
-});
+})
 
 const linodeInstance = new linode.Instance(`istrav:::${pulumi.getStack()}`, {
   type: "g6-nanode-1",
-  stackscriptId: stackscript.id,
+  // rootPass: '',
+  stackscriptData: stackscript.script,
   image: debian9,
   region: "us-east",
   // Include all "LISH" registered SSH Keys
   authorizedKeys: profile.authorizedKeys,
   // Include all User configured SSH Keys
   authorizedUsers: [profile.username],
-}, { dependsOn: [stackscript] });
+}, { dependsOn: [stackscript] })
 
-exports.instanceLabel = linodeInstance.label;
-exports.instanceIP = linodeInstance.ipAddress;
-
-const web = new linode.Instance(`istrav:::${pulumi.getStack()}`, {
-  group: "foo",
-  image: "linode/ubuntu18.04",
-  label: "simple_instance",
-  privateIp: true,
-  region: "us-central",
-  rootPass: "Furlong5280",
-  swapSize: 256,
-  tags: ["istrav"],
-  type: "g6-nanode-1",
-  stackscriptId: 1,
-  stackscriptData: { key: userData },
-});
-
-export const ip = web.ipAddress
+export const ip = linodeInstance.ipAddress
