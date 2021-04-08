@@ -8,6 +8,8 @@ let instanceCount = config.getNumber("instanceCount") || 1
 console.log('istrav:instanceCount', instanceCount)
 let instanceType = config.require("instanceType") || 't2.micro'
 console.log('istrav:instanceType', instanceType)
+let ami = config.require("ami") || 'ami-042e8287309f5df03' // Ubuntu Server 20.04 LTS // for us-east-1
+console.log('istrav:ami', ami)
 
 const debian9 = "linode/debian9"
 const startupScript = `#!/bin/bash
@@ -58,7 +60,7 @@ const fooNetworkInterface = new aws.ec2.NetworkInterface(`istrav-networkInterfac
 })
 
 const fooInstance = new aws.ec2.Instance(`istrav-instance:::${pulumi.getStack()}`, {
-  ami: "ami-05d72852800cbf29e", // Amazon Linux 2
+  ami: ami,
   instanceType: instanceType,
   userData: startupScript,
   networkInterfaces: [{

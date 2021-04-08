@@ -22,6 +22,10 @@ on:
         description: 'Instance Type'
         required: true
         default: 't2.micro'
+      ami:
+        description: 'AMI'
+        required: true
+        default: 'ami-042e8287309f5df03'
 jobs:
   up:
     name: Update
@@ -46,6 +50,7 @@ jobs:
           pulumi config set istrav:zone ${{ github.event.inputs.zoneId }}
           pulumi config set istrav:instanceCount ${{ github.event.inputs.instanceCount }}
           pulumi config set istrav:instanceType ${{ github.event.inputs.instanceType }}
+          pulumi config set istrav:ami ${{ github.event.inputs.ami }}
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
       - uses: pulumi/actions@v2
