@@ -1,4 +1,4 @@
-name: PulumiUp
+name: istravUp
 on:
   workflow_dispatch:
     inputs:

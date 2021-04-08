@@ -1,4 +1,4 @@
-name: PulumiInit
+name: istravInit
 on:
   workflow_dispatch:
     inputs:

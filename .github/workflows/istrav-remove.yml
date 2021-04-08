@@ -1,5 +1,5 @@
-name: istravDestory
-on: 
+name: istravRemove
+on:
   workflow_dispatch:
     inputs:
       stackId:
@@ -7,7 +7,7 @@ on:
         required: true
         default: 'prod'
 jobs:
-  destroy:
+  remove:
     name: Delete
     runs-on: ubuntu-latest
     defaults:
@@ -23,11 +23,8 @@ jobs:
           node-version: 14.x
       - name: Install 
         run: npm install
-      - uses: pulumi/actions@v2
-        with:
-          work-dir: ./istrav
-          command: destroy
-          stack-name: ${{ github.event.inputs.stackId }}
+      - name: Delete
+        run: pulumi stack rm ${{ github.event.inputs.stackId }}
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
           DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
