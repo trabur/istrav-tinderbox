@@ -1,6 +1,5 @@
-
-import * as linode from "@pulumi/linode"
 import * as pulumi from "@pulumi/pulumi"
+import * as aws from "@pulumi/aws"
 
 const debian9 = "linode/debian9"
 const startupScript = `#!/bin/bash
@@ -26,28 +25,38 @@ echo "server {
 sudo service nginx restart
 `
 
-const profile = pulumi.output(linode.getProfile({ async: true }));
-
-const stackscript = new linode.StackScript(`istrav:::${pulumi.getStack()}`, {
-  label: "istrav",
-  script: startupScript,
-  description: "nginx with a node.js/express API",
-  images: [debian9],
+const myVpc = new aws.ec2.Vpc(`istrav-vpc:::${pulumi.getStack()}`, {
+    cidrBlock: "172.16.0.0/16",
+    tags: {
+        Name: "istrav",
+    },
+})
+const mySubnet = new aws.ec2.Subnet(`istrav-subnet:::${pulumi.getStack()}`, {
+    vpcId: myVpc.id,
+    cidrBlock: "172.16.10.0/24",
+    availabilityZone: "us-west-2a",
+    tags: {
+        Name: "istrav",
+    },
+})
+const fooNetworkInterface = new aws.ec2.NetworkInterface(`istrav-networkInterface:::${pulumi.getStack()}`, {
+    subnetId: mySubnet.id,
+    privateIps: ["172.16.10.100"],
+    tags: {
+        Name: "istrav",
+    },
+})
+const fooInstance = new aws.ec2.Instance(`istrav-instance:::${pulumi.getStack()}`, {
+    ami: "ami-005e54dee72cc1d00",
+    instanceType: "t2.micro",
+    userData: startupScript,
+    networkInterfaces: [{
+      networkInterfaceId: fooNetworkInterface.id,
+      deviceIndex: 0,
+    }],
+    creditSpecification: {
+      cpuCredits: "unlimited",
+    },
 })
 
-const linodeInstance = new linode.Instance(`istrav:::${pulumi.getStack()}`, {
-  type: "g6-nanode-1",
-  // rootPass: '',
-  stackscriptId: Number(stackscript.id),
-  // stackscriptData: {
-  //   id: stackscript.id,
-  // },
-  image: debian9,
-  region: "us-east",
-  // Include all "LISH" registered SSH Keys
-  authorizedKeys: profile.authorizedKeys,
-  // Include all User configured SSH Keys
-  authorizedUsers: [profile.username],
-}, { dependsOn: [stackscript] })
-
-export const ip = linodeInstance.ipAddress
+export const ip = fooInstance.publicIp
