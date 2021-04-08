@@ -24,7 +24,7 @@ jobs:
       - name: Install 
         run: npm install
       - name: Delete
-        run: pulumi stack rm ${{ github.event.inputs.stackId }}
+        run: pulumi stack rm ${{ github.event.inputs.stackId }} -y
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
           DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
