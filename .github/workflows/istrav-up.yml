@@ -22,6 +22,7 @@ jobs:
         run: npm install
       - uses: pulumi/actions@v2
         with:
+          work-dir: ./istrav
           command: up
           stack-name: dev
         env:
