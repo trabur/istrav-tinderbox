@@ -2,7 +2,6 @@ import * as pulumi from "@pulumi/pulumi"
 import * as aws from "@pulumi/aws"
 
 let config = new pulumi.Config()
-let region: any = config.require("aws:region")
 let plan: any = config.require("plan") 
 let zone = 'us-east-1a'
 let instanceCount = 1
@@ -26,7 +25,6 @@ if (plan === 'tardigrade') {
 // note: EBS Storage is $20/mo for each 250GB
 // https://aws.amazon.com/ec2/pricing/on-demand/
 
-console.log('aws:region', region)
 console.log('istrav:zone', zone)
 console.log('istrav:plan', plan)
 console.log('istrav:instanceCount', instanceCount)

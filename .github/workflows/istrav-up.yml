@@ -58,7 +58,7 @@ jobs:
       - name: Configure
         run: | 
           pulumi stack select ${{ github.event.inputs.stackId }}
-          pulumi config set --plaintext aws:region ${{ github.event.inputs.regionId }}
+          pulumi config set aws:region ${{ github.event.inputs.regionId }}
           pulumi config set --plaintext istrav:plan ${{ github.event.inputs.planId }}
           pulumi config set --plaintext istrav:AMQP_URI ${{ github.event.inputs.AMQP_URI }}
           pulumi config set --plaintext istrav:MONGODB_URI ${{ github.event.inputs.MONGODB_URI }}
