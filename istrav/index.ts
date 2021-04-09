@@ -1,14 +1,14 @@
 import * as pulumi from "@pulumi/pulumi"
 import * as aws from "@pulumi/aws"
 
-let PORT = 3000
+let config = new pulumi.Config()
+let region: any = config.require("aws:region")
+let plan: any = config.require("plan") 
 let zone = 'us-east-1a'
 let instanceCount = 1
 let instanceType = 't2.nano' // smallest 0.5GiB Memory
 let ami = 'ami-042e8287309f5df03' // Ubuntu Server 20.04 LTS // for us-east-1
 
-let config = new pulumi.Config()
-let plan: any = config.require("plan") 
 if (plan === 'tardigrade') {
   instanceType = 't2.micro'  // $8.352/mo (0.0116/hr) for 1vCPU and 1GiB Memory
 } else if (plan === 'astroid') {
@@ -26,8 +26,9 @@ if (plan === 'tardigrade') {
 // note: EBS Storage is $20/mo for each 250GB
 // https://aws.amazon.com/ec2/pricing/on-demand/
 
-console.log('istrav:plan', plan)
+console.log('aws:region', region)
 console.log('istrav:zone', zone)
+console.log('istrav:plan', plan)
 console.log('istrav:instanceCount', instanceCount)
 console.log('istrav:instanceType', instanceType)
 console.log('istrav:ami', ami)
@@ -39,6 +40,7 @@ let SECRET = config.require("SECRET")
 let AWS_ACCESS_KEY = config.require("AWS_ACCESS_KEY")
 let AWS_SECRET_KEY = config.require("AWS_SECRET_KEY")
 
+let PORT = 3000
 const startupScript = `#!/bin/bash
 # version: 1
 sudo apt-get update

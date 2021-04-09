@@ -17,6 +17,7 @@ async function main () {
     inputs: {
       stackId: 'prod',
       planId: 'tardigrade',
+      regionId: 'us-east-1',
       AMQP_URI: process.env.AMQP_URI,
       MONGODB_URI: process.env.MONGODB_URI,
       POSTGRESQL_URI: process.env.POSTGRESQL_URI,
