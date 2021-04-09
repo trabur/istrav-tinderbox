@@ -40,6 +40,7 @@ let AWS_ACCESS_KEY = config.require("AWS_ACCESS_KEY")
 let AWS_SECRET_KEY = config.require("AWS_SECRET_KEY")
 
 const startupScript = `#!/bin/bash
+# version: 1
 sudo apt-get update
 sudo apt-get install ec2-instance-connect
 sudo apt-get install -y nginx
