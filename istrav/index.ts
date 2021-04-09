@@ -32,12 +32,12 @@ console.log('istrav:instanceCount', instanceCount)
 console.log('istrav:instanceType', instanceType)
 console.log('istrav:ami', ami)
 
-let AMQP_URI = config.require("AMQP_URI")
-let MONGODB_URI = config.require("MONGODB_URI")
-let POSTGRESQL_URI = config.require("POSTGRESQL_URI")
-let SECRET = config.require("SECRET")
-let AWS_ACCESS_KEY = config.require("AWS_ACCESS_KEY")
-let AWS_SECRET_KEY = config.require("AWS_SECRET_KEY")
+let AMQP_URI = config.requireSecret("AMQP_URI")
+let MONGODB_URI = config.requireSecret("MONGODB_URI")
+let POSTGRESQL_URI = config.requireSecret("POSTGRESQL_URI")
+let SECRET = config.requireSecret("SECRET")
+let AWS_ACCESS_KEY = config.requireSecret("AWS_ACCESS_KEY")
+let AWS_SECRET_KEY = config.requireSecret("AWS_SECRET_KEY")
 
 const startupScript = `#!/bin/bash
 # version: 1

@@ -56,12 +56,12 @@ jobs:
           pulumi stack select ${{ github.event.inputs.stackId }}
           pulumi config set aws:region ${{ github.event.inputs.regionId }}
           pulumi config set istrav:plan ${{ github.event.inputs.planId }}
-          pulumi config set istrav:AMQP_URI ${{ github.event.inputs.AMQP_URI }}
-          pulumi config set istrav:MONGODB_URI ${{ github.event.inputs.MONGODB_URI }}
-          pulumi config set istrav:POSTGRESQL_URI ${{ github.event.inputs.POSTGRESQL_URI }}
-          pulumi config set istrav:SECRET ${{ github.event.inputs.SECRET }}
-          pulumi config set istrav:AWS_ACCESS_KEY ${{ github.event.inputs.AWS_ACCESS_KEY }}
-          pulumi config set istrav:AWS_SECRET_KEY ${{ github.event.inputs.AWS_SECRET_KEY }}
+          pulumi config set --secret istrav:AMQP_URI ${{ github.event.inputs.AMQP_URI }}
+          pulumi config set --secret istrav:MONGODB_URI ${{ github.event.inputs.MONGODB_URI }}
+          pulumi config set --secret istrav:POSTGRESQL_URI ${{ github.event.inputs.POSTGRESQL_URI }}
+          pulumi config set --secret istrav:SECRET ${{ github.event.inputs.SECRET }}
+          pulumi config set --secret istrav:AWS_ACCESS_KEY ${{ github.event.inputs.AWS_ACCESS_KEY }}
+          pulumi config set --secret istrav:AWS_SECRET_KEY ${{ github.event.inputs.AWS_SECRET_KEY }}
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
       - uses: pulumi/actions@v2
