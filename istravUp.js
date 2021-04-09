@@ -8,6 +8,7 @@ let repo = 'istrav-tinderbox'
 let workflowId = 'istrav-up.yml'
 
 async function main () {
+  // https://octokit.github.io/rest.js/v18#actions
   let response = await octokit.rest.actions.createWorkflowDispatch({
     owner: owner,
     repo: repo,

@@ -7,6 +7,6 @@
     "octokit": "^1.0.0"
   },
   "scripts": {
-    "trigger:istrav": "node dispatch.js"
+    "trigger:istravUp": "node istravUp.js"
   }
 }
