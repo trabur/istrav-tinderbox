@@ -40,10 +40,25 @@ let AWS_SECRET_KEY = config.require("AWS_SECRET_KEY")
 
 let PORT = 3000
 const startupScript = `#!/bin/bash
-# version: 2
+# version: 3
 sudo apt-get update
 sudo apt-get install -y ec2-instance-connect
 sudo apt-get install -y nginx
+
+# check that nginx is running
+sudo nginx -v
+curl -I 127.0.0.1
+systemctl status nginx
+
+# firewall
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 'Nginx HTTP'
+sudo ufw allow ssh
+sudo ufw allow https
+sudo ufw allow http
+sudo ufw enable
+sudo ufw status
 
 # install node.js
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
@@ -59,13 +74,11 @@ npm install -g ts-node
 # install hacktracks.org
 git clone https://github.com/trabur/istrav-api.git
 cd ./istrav-api
-npm i
-npm run build
 echo "module.exports = {
   apps: [
     {
       name: 'istrav-api',
-      script: './build/src/server.js',
+      script: './build/server.js',
       watch: true,
       env: {
         PORT: ${PORT},
@@ -75,7 +88,7 @@ echo "module.exports = {
         POSTGRESQL_URI: '${POSTGRESQL_URI}',
         SECRET: '${SECRET}',
         AWS_ACCESS_KEY: '${AWS_ACCESS_KEY}',
-        AWS_SECRET_KEY: "'${AWS_SECRET_KEY}'
+        AWS_SECRET_KEY: '${AWS_SECRET_KEY}'
       }
     }
   ]
@@ -83,18 +96,35 @@ echo "module.exports = {
 pm2 start pm2.config.js
 cd ..
 
+# check node.js server
+curl -I 127.0.0.1:${PORT}
+
 # install nginx proxy and load balancer
 sudo -s
 echo "server {
-  listen       80;
-  server_name localhost hacktracks.org;
+  listen 80 default_server;
+  listen [::]:80 default_server;
+
+  root /var/www/html;
+  index index.html;
+
+  server_name _;
+
+  # proxy_set_header X-Real-IP $remote_addr;
+  # proxy_set_header Host $host;
+  # proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  # proxy_set_header X-Forwarded-Proto $scheme;
 
   location / {
-    proxy_pass http://localhost:${PORT};
+    proxy_pass http://127.0.0.1:${PORT};
   }
 }" > '/etc/nginx/sites-available/default'
 exit
 sudo service nginx restart
+
+# check that nginx is running
+curl -I 127.0.0.1
+systemctl status nginx
 
 # finish`
 
@@ -103,11 +133,13 @@ const group = new aws.ec2.SecurityGroup(`istrav-securityGroup:::${pulumi.getStac
     { protocol: "tcp", fromPort: 22, toPort: 22, cidrBlocks: ["0.0.0.0/0"] },
     { protocol: "tcp", fromPort: 80, toPort: 80, cidrBlocks: ["0.0.0.0/0"] },
     { protocol: "tcp", fromPort: 443, toPort: 443, cidrBlocks: ["0.0.0.0/0"] },
+    { protocol: "tcp", fromPort: 5432, toPort: 5432, cidrBlocks: ["0.0.0.0/0"] },
   ],
   egress: [
     { protocol: "tcp", fromPort: 22, toPort: 22, cidrBlocks: ["0.0.0.0/0"] },
     { protocol: "tcp", fromPort: 80, toPort: 80, cidrBlocks: ["0.0.0.0/0"] },
     { protocol: "tcp", fromPort: 443, toPort: 443, cidrBlocks: ["0.0.0.0/0"] },
+    { protocol: "tcp", fromPort: 5432, toPort: 5432, cidrBlocks: ["0.0.0.0/0"] },
   ]
 })
 
