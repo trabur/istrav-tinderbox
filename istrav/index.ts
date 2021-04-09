@@ -6,7 +6,7 @@ let plan: any = config.require("plan")
 let zone = 'us-east-1a'
 let instanceCount = 1
 let instanceType = 't2.nano' // smallest 0.5GiB Memory
-let ami = 'ami-042e8287309f5df03' // Ubuntu Server 20.04 LTS // for us-east-1
+let ami = 'ami-0742b4e673072066f' // Amazon Linux 2 AMI // for us-east-1
 
 if (plan === 'tardigrade') {
   instanceType = 't2.micro'  // $8.352/mo (0.0116/hr) for 1vCPU and 1GiB Memory
