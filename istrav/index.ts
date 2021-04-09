@@ -1,25 +1,43 @@
 import * as pulumi from "@pulumi/pulumi"
 import * as aws from "@pulumi/aws"
 
+let PORT = 3000
+let zone = 'us-east-1a'
+let instanceCount = 1
+let instanceType = 't2.nano' // smallest 0.5GiB Memory
+let ami = 'ami-042e8287309f5df03' // Ubuntu Server 20.04 LTS // for us-east-1
+
 let config = new pulumi.Config()
-let zone = config.require("zone") || 'us-east-1a'
+let plan: any = config.require("plan") 
+if (plan === 'tardigrade') {
+  instanceType = 't2.micro'  // $8.352/mo (0.0116/hr) for 1vCPU and 1GiB Memory
+} else if (plan === 'astroid') {
+  instanceType = 't2.small'  // $16.56/mo ($0.023/hr) for 1vCPU and 2GiB Memory
+} else if (plan === 'satellite') {
+  instanceType = 't2.medium' // $33.408/mo ($0.0464/hr) for 2vCPU and 4GiB Memory
+} else if (plan === 'planet') {
+  instanceType = 't2.large'  // $66.816/mo ($0.0928/hr) for 2vCPU and 8GiB Memory
+} else if (plan === 'star') {
+  instanceType = 't2.xlarge'  // $133.632/mo ($0.1856/hr) for 4vCPU and 16GiB Memory
+} else {
+  // plan = back hole
+  instanceType = 't2.2xlarge'  // $267.264/mo ($0.3712/hr) for 8vCPU and 32GiB Memory
+}
+// note: EBS Storage is $20/mo for each 250GB
+// https://aws.amazon.com/ec2/pricing/on-demand/
+
+console.log('istrav:plan', plan)
 console.log('istrav:zone', zone)
-let instanceCount = config.getNumber("instanceCount") || 1
 console.log('istrav:instanceCount', instanceCount)
-let instanceType = config.require("instanceType") || 't2.micro'
 console.log('istrav:instanceType', instanceType)
-let ami = config.require("ami") || 'ami-042e8287309f5df03' // Ubuntu Server 20.04 LTS // for us-east-1
 console.log('istrav:ami', ami)
 
-let PORT = 3000
-
-let RAW: any = config.require("RAW")
-let AMQP_URI = RAW.AMQP_URI
-let MONGODB_URI = RAW.MONGODB_URI
-let POSTGRESQL_URI = RAW.POSTGRESQL_URI
-let SECRET = RAW.SECRET
-let AWS_ACCESS_KEY = RAW.AWS_ACCESS_KEY
-let AWS_SECRET_KEY = RAW.AWS_SECRET_KEY
+let AMQP_URI = config.require("AMQP_URI")
+let MONGODB_URI = config.require("MONGODB_URI")
+let POSTGRESQL_URI = config.require("POSTGRESQL_URI")
+let SECRET = config.require("SECRET")
+let AWS_ACCESS_KEY = config.require("AWS_ACCESS_KEY")
+let AWS_SECRET_KEY = config.require("AWS_SECRET_KEY")
 
 const startupScript = `#!/bin/bash
 sudo apt-get update
