@@ -43,7 +43,8 @@ const startupScript = `#!/bin/bash
 # version: 2
 sudo apt-get update
 sudo apt-get install -y ec2-instance-connect
-sudo apt-get install -y nginx 
+sudo apt-get install -y nginx
+sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow 'Nginx HTTP'
 sudo ufw allow ssh
