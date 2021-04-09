@@ -41,9 +41,8 @@ let AWS_SECRET_KEY = config.require("AWS_SECRET_KEY")
 let PORT = 3000
 const startupScript = `#!/bin/bash
 # version: 3
-sudo apt-get update
-sudo apt-get install -y ec2-instance-connect
-sudo apt-get install -y nginx
+sudo amazon-linux-extras install -y nginx1
+sudo systemctl start nginx
 
 # check that nginx is running
 sudo nginx -v
@@ -51,12 +50,17 @@ curl -I 127.0.0.1
 systemctl status nginx
 
 # firewall
+sudo amazon-linux-extras install epel -y
+sudo yum install --enablerepo="epel" ufw -y
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow 'Nginx HTTP'
 sudo ufw allow ssh
 sudo ufw allow https
 sudo ufw allow http
+sudo ufw allow postgresql/tcp
+sudo ufw allow 27017 # mongodb
+sudo ufw allow 5672  # rabbitmq
 sudo ufw enable
 sudo ufw status
 
@@ -68,12 +72,12 @@ node -e "console.log('Running Node.js ' + process.version)"
 
 # install node.js global deps
 npm install pm2 -g
-npm install -g typescript
-npm install -g ts-node
 
 # install hacktracks.org
+sudo yum install git -y
 git clone https://github.com/trabur/istrav-api.git
 cd ./istrav-api
+npm i
 echo "module.exports = {
   apps: [
     {
@@ -134,12 +138,16 @@ const group = new aws.ec2.SecurityGroup(`istrav-securityGroup:::${pulumi.getStac
     { protocol: "tcp", fromPort: 80, toPort: 80, cidrBlocks: ["0.0.0.0/0"] },
     { protocol: "tcp", fromPort: 443, toPort: 443, cidrBlocks: ["0.0.0.0/0"] },
     { protocol: "tcp", fromPort: 5432, toPort: 5432, cidrBlocks: ["0.0.0.0/0"] },
+    { protocol: "tcp", fromPort: 27017, toPort: 27017, cidrBlocks: ["0.0.0.0/0"] },
+    { protocol: "tcp", fromPort: 5672, toPort: 5672, cidrBlocks: ["0.0.0.0/0"] },
   ],
   egress: [
     { protocol: "tcp", fromPort: 22, toPort: 22, cidrBlocks: ["0.0.0.0/0"] },
     { protocol: "tcp", fromPort: 80, toPort: 80, cidrBlocks: ["0.0.0.0/0"] },
     { protocol: "tcp", fromPort: 443, toPort: 443, cidrBlocks: ["0.0.0.0/0"] },
     { protocol: "tcp", fromPort: 5432, toPort: 5432, cidrBlocks: ["0.0.0.0/0"] },
+    { protocol: "tcp", fromPort: 27017, toPort: 27017, cidrBlocks: ["0.0.0.0/0"] },
+    { protocol: "tcp", fromPort: 5672, toPort: 5672, cidrBlocks: ["0.0.0.0/0"] },
   ]
 })
 
