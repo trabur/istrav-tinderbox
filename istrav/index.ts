@@ -12,12 +12,14 @@ let ami = config.require("ami") || 'ami-042e8287309f5df03' // Ubuntu Server 20.0
 console.log('istrav:ami', ami)
 
 let PORT = 3000
-let AMQP_URI = config.require("AMQP_URI")
-let MONGODB_URI = config.require("MONGODB_URI")
-let POSTGRESQL_URI = config.require("POSTGRESQL_URI")
-let SECRET = config.require("SECRET")
-let AWS_ACCESS_KEY = config.require("AWS_ACCESS_KEY")
-let AWS_SECRET_KEY = config.require("AWS_SECRET_KEY")
+
+let RAW: any = config.require("RAW")
+let AMQP_URI = RAW.AMQP_URI
+let MONGODB_URI = RAW.MONGODB_URI
+let POSTGRESQL_URI = RAW.POSTGRESQL_URI
+let SECRET = RAW.SECRET
+let AWS_ACCESS_KEY = RAW.AWS_ACCESS_KEY
+let AWS_SECRET_KEY = RAW.AWS_SECRET_KEY
 
 const startupScript = `#!/bin/bash
 sudo apt-get update
