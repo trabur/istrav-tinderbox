@@ -41,6 +41,9 @@ let AWS_SECRET_KEY = config.require("AWS_SECRET_KEY")
 let PORT = 3000
 const startupScript = `#!/bin/bash
 # version: 6
+sudo yum update -y
+
+# load balancer
 sudo yum install nginx -y
 sudo systemctl start nginx
 
