@@ -1,36 +1,74 @@
 import * as pulumi from "@pulumi/pulumi"
-import * as aws from "@pulumi/aws"
+import * as digitalocean from "@pulumi/digitalocean";
+import * as kubernetes from "@pulumi/kubernetes";
 
+// setup subscription
 let config = new pulumi.Config()
-let plan: any = config.require("plan") 
-let zone = 'us-east-1a'
-let instanceCount = 1
-let instanceType = 't2.nano' // smallest 0.5GiB Memory
-let ami = 'ami-0742b4e673072066f' // Amazon Linux 2 AMI // for us-east-1
+let stack: any = config.require("stackId") 
+let plan: any = config.require("planId") 
+let region = digitalocean.Regions.NYC3
+let instanceType
+let replicas
+let instanceCount = 2
 
-if (plan === 'tardigrade') {
-  instanceType = 't2.micro'  // $8.352/mo (0.0116/hr) for 1vCPU and 1GiB Memory
-} else if (plan === 'astroid') {
-  instanceType = 't2.small'  // $16.56/mo ($0.023/hr) for 1vCPU and 2GiB Memory
-} else if (plan === 'satellite') {
-  instanceType = 't2.medium' // $33.408/mo ($0.0464/hr) for 2vCPU and 4GiB Memory
-} else if (plan === 'planet') {
-  instanceType = 't2.large'  // $66.816/mo ($0.0928/hr) for 2vCPU and 8GiB Memory
-} else if (plan === 'star') {
-  instanceType = 't2.xlarge'  // $133.632/mo ($0.1856/hr) for 4vCPU and 16GiB Memory
+// digital ocean:
+// Burstable performance from $5/mo
+// Consistent, fast performance from $40/mo
+// S3 Storage is $5/mo for each 250GB
+// https://www.digitalocean.com/pricing/
+
+// CPU-Optimized Droplets
+// dedicated instances
+if (plan === 'black-hole:supermassive') {
+  // millions or billions of times the mass of our Sun
+  instanceType = digitalocean.DropletSlugs.DropletC32  // $640.00/mo 32vCPU and 64GB Memory
+  replicas = 32
+} else if (plan === 'back-hole:large') {
+  // 1000 to 2 million times the msass of our Sun
+  instanceType = digitalocean.DropletSlugs.DropletC16  // $320.00/mo 16vCPU and 32GB Memory
+  replicas = 16
+} else if (plan === 'back-hole:intermediate') {
+  // 10 to 1000 times the msass of our Sun
+  instanceType = digitalocean.DropletSlugs.DropletC8  // $160.00/mo 8vCPU and 16GB Memory
+  replicas = 8
+} else if (plan === 'back-hole:stellar') {
+  // 3 to 10 times the mass of our Sun
+  instanceType = digitalocean.DropletSlugs.DropletC4  // $80.00/mo 4vCPU and 8GB Memory
+  replicas = 4
+} else if (plan === 'back-hole:miniature') {
+  // any mass equal to or above about 2.21×10−8 kg or 22.1 micrograms
+  instanceType = digitalocean.DropletSlugs.DropletC2  // $40.00/mo 2vCPU and 4GB Memory
+  replicas = 2
 } else {
-  // plan = back hole
-  instanceType = 't2.2xlarge'  // $267.264/mo ($0.3712/hr) for 8vCPU and 32GiB Memory
+  // Basic Droplets
+  // shared instances
+  if (plan === 'star') {
+    instanceType = digitalocean.DropletSlugs.DropletS4VCPU8GB  // $40/mo 4vCPU and 8GB Memory
+    replicas = 4
+  } else if (plan === 'planet') {
+    instanceType = digitalocean.DropletSlugs.DropletS2VCPU4GB  // $20/mo 2vCPU and 4GB Memory
+    replicas = 2
+  } else if (plan === 'satellite') {
+    instanceType = digitalocean.DropletSlugs.DropletS2VCPU2GB  // $15/mo 2vCPU and 2GB Memory
+    replicas = 2
+  } else if (plan === 'astroid') {
+    instanceType = digitalocean.DropletSlugs.DropletS1VCPU2GB  // $10/mo 1vCPU and 2GB Memory
+    replicas = 1
+  } else {
+    // plan === 'tardigrade'
+    instanceType = digitalocean.DropletSlugs.DropletS1VCPU1GB  // $5/mo 1vCPU and 1GB Memory
+    replicas = 1
+  }
 }
-// note: EBS Storage is $20/mo for each 250GB
-// https://aws.amazon.com/ec2/pricing/on-demand/
 
-console.log('istrav:zone', zone)
+// log details
 console.log('istrav:plan', plan)
+console.log('istrav:stack', stack)
+console.log('istrav:region', region)
 console.log('istrav:instanceCount', instanceCount)
 console.log('istrav:instanceType', instanceType)
-console.log('istrav:ami', ami)
 
+// container enviornment variables
 let AMQP_URI = config.require("AMQP_URI")
 let MONGODB_URI = config.require("MONGODB_URI")
 let POSTGRESQL_URI = config.require("POSTGRESQL_URI")
@@ -38,128 +76,44 @@ let SECRET = config.require("SECRET")
 let AWS_ACCESS_KEY = config.require("AWS_ACCESS_KEY")
 let AWS_SECRET_KEY = config.require("AWS_SECRET_KEY")
 
-let PORT = 3000
-const startupScript = `#!/bin/bash
-# version: 7
-sudo yum update -y
-
-# load balancer
-sudo yum install nginx -y
-sudo systemctl start nginx
-
-# check that nginx is running
-sudo nginx -v
-curl -I 127.0.0.1
-systemctl status nginx
-
-# firewall
-sudo amazon-linux-extras install epel -y
-sudo yum install --enablerepo="epel" ufw -y
-sudo ufw default deny incoming
-sudo ufw default allow outgoing
-sudo ufw allow 'Nginx HTTP'
-sudo ufw allow ssh
-sudo ufw allow https
-sudo ufw allow http
-sudo ufw allow postgresql/tcp
-sudo ufw allow 27017 # mongodb
-sudo ufw allow 5672  # rabbitmq
-sudo ufw enable
-sudo ufw status
-
-# install node.js
-curl --silent --location https://rpm.nodesource.com/setup_14.x | sudo bash -
-sudo yum -y install nodejs
-node -e "console.log('Running Node.js ' + process.version)"
-
-# install node.js global deps
-npm install pm2 -g
-
-# install hacktracks.org
-sudo yum install git -y
-git clone https://github.com/trabur/istrav-api.git
-cd ./istrav-api
-npm i
-echo "module.exports = {
-  apps: [
-    {
-      name: 'istrav-api',
-      script: './build/server.js',
-      watch: true,
-      env: {
-        PORT: ${PORT},
-        NODE_ENV: 'production',
-        AMQP_URI: '${AMQP_URI}',
-        MONGODB_URI: '${MONGODB_URI}',
-        POSTGRESQL_URI: '${POSTGRESQL_URI}',
-        SECRET: '${SECRET}',
-        AWS_ACCESS_KEY: '${AWS_ACCESS_KEY}',
-        AWS_SECRET_KEY: '${AWS_SECRET_KEY}'
-      }
-    }
-  ]
-}" > 'pm2.config.js'
-pm2 start pm2.config.js
-cd ..
-
-# check node.js server
-curl -I 127.0.0.1:${PORT}
-
-# install nginx proxy and load balancer
-sudo -s
-echo "server {
-  listen 80 default_server;
-  listen [::]:80 default_server;
-
-  root /var/www/html;
-  index index.html;
-
-  server_name _;
-
-  # proxy_set_header X-Real-IP $remote_addr;
-  # proxy_set_header Host $host;
-  # proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-  # proxy_set_header X-Forwarded-Proto $scheme;
-
-  location / {
-    proxy_pass http://127.0.0.1:${PORT};
-  }
-}" > '/etc/nginx/sites-available/default'
-exit
-sudo service nginx restart
-
-# check that nginx is running
-curl -I 127.0.0.1
-systemctl status nginx
-
-# finish`
-
-const group = new aws.ec2.SecurityGroup(`istrav-securityGroup:::${pulumi.getStack()}`, {
-  ingress: [
-    { protocol: "tcp", fromPort: 22, toPort: 22, cidrBlocks: ["0.0.0.0/0"] },
-    { protocol: "tcp", fromPort: 80, toPort: 80, cidrBlocks: ["0.0.0.0/0"] },
-    { protocol: "tcp", fromPort: 443, toPort: 443, cidrBlocks: ["0.0.0.0/0"] },
-    { protocol: "tcp", fromPort: 5432, toPort: 5432, cidrBlocks: ["0.0.0.0/0"] },
-    { protocol: "tcp", fromPort: 27017, toPort: 27017, cidrBlocks: ["0.0.0.0/0"] },
-    { protocol: "tcp", fromPort: 5672, toPort: 5672, cidrBlocks: ["0.0.0.0/0"] },
-  ],
-  egress: [
-    { protocol: "tcp", fromPort: 22, toPort: 22, cidrBlocks: ["0.0.0.0/0"] },
-    { protocol: "tcp", fromPort: 80, toPort: 80, cidrBlocks: ["0.0.0.0/0"] },
-    { protocol: "tcp", fromPort: 443, toPort: 443, cidrBlocks: ["0.0.0.0/0"] },
-    { protocol: "tcp", fromPort: 5432, toPort: 5432, cidrBlocks: ["0.0.0.0/0"] },
-    { protocol: "tcp", fromPort: 27017, toPort: 27017, cidrBlocks: ["0.0.0.0/0"] },
-    { protocol: "tcp", fromPort: 5672, toPort: 5672, cidrBlocks: ["0.0.0.0/0"] },
-  ]
+// launch application
+const cluster = new digitalocean.KubernetesCluster(`istrav/cluster/${stack}/${plan}`, {
+  region: region,
+  version: "latest",
+  nodePool: {
+    name: "default",
+    size: instanceType,
+    nodeCount: instanceCount,
+  },
 })
 
-const fooInstance = new aws.ec2.Instance(`istrav-instance:::${pulumi.getStack()}`, {
-  availabilityZone: zone,
-  ami: ami,
-  instanceType: instanceType,
-  userData: startupScript,
-  vpcSecurityGroupIds: [ group.id ],
-  keyName: 'istrav'
-})
+export const kubeconfig = cluster.kubeConfigs[0].rawConfig
 
-export const ip = fooInstance.publicIp
+const provider = new kubernetes.Provider(`istrav/k8s/${stack}/${plan}`, { kubeconfig })
+
+const appLabels = { "app": "app-nginx" }
+const app = new kubernetes.apps.v1.Deployment(`istrav/deployment/${stack}/${plan}`, {
+  spec: {
+    selector: { matchLabels: appLabels },
+    replicas: replicas,
+    template: {
+      metadata: { labels: appLabels },
+      spec: {
+        containers: [{
+          name: "nginx",
+          image: "nginx",
+        }],
+      },
+    },
+  },
+}, { provider })
+
+const appService = new kubernetes.core.v1.Service(`istrav/service/${stack}/${plan}`, {
+  spec: {
+    type: "LoadBalancer",
+    selector: app.spec.template.metadata.labels,
+    ports: [{ port: 80 }],
+  },
+}, { provider })
+
+export const ingressIp = appService.status.loadBalancer.ingress[0].ip
