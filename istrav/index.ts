@@ -40,7 +40,7 @@ let AWS_SECRET_KEY = config.require("AWS_SECRET_KEY")
 
 let PORT = 3000
 const startupScript = `#!/bin/bash
-# version: 6
+# version: 7
 sudo yum update -y
 
 # load balancer
