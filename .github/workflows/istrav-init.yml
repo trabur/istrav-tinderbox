@@ -5,7 +5,7 @@ on:
       stackId:
         description: 'Stack Id'     
         required: true
-        default: 'prod'
+        default: 'istrav.com'
 jobs:
   init:
     name: Install

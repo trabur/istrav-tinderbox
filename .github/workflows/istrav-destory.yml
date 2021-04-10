@@ -5,11 +5,7 @@ on:
       stackId:
         description: 'Stack Id'     
         required: true
-        default: 'prod'
-      regionId:
-        description: 'Region Id'     
-        required: true
-        default: 'us-east-1'
+        default: 'istrav.com'
 jobs:
   destroy:
     name: Delete
@@ -38,4 +34,4 @@ jobs:
           LINODE_TOKEN: ${{ secrets.LINODE_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ github.event.inputs.regionId }}
+          

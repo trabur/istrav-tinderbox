@@ -15,9 +15,8 @@ async function main () {
     workflow_id: workflowId,
     ref: 'master',
     inputs: {
-      stackId: 'prod',
+      stackId: 'istrav.com',
       planId: 'tardigrade',
-      regionId: 'us-east-1',
       AMQP_URI: process.env.AMQP_URI,
       MONGODB_URI: process.env.MONGODB_URI,
       POSTGRESQL_URI: process.env.POSTGRESQL_URI,
