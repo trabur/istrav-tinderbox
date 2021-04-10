@@ -77,7 +77,7 @@ let AWS_ACCESS_KEY = config.require("AWS_ACCESS_KEY")
 let AWS_SECRET_KEY = config.require("AWS_SECRET_KEY")
 
 // launch application
-const cluster = new digitalocean.KubernetesCluster(`istrav:cluster:${stack}:${plan}`, {
+const cluster = new digitalocean.KubernetesCluster(`istrav-cluster-${stack}-${plan}`, {
   region: region,
   version: "latest",
   nodePool: {
@@ -89,10 +89,10 @@ const cluster = new digitalocean.KubernetesCluster(`istrav:cluster:${stack}:${pl
 
 export const kubeconfig = cluster.kubeConfigs[0].rawConfig
 
-const provider = new kubernetes.Provider(`istrav:k8s:${stack}:${plan}`, { kubeconfig })
+const provider = new kubernetes.Provider(`istrav-k8s-${stack}-${plan}`, { kubeconfig })
 
 const appLabels = { "app": "app-nginx" }
-const app = new kubernetes.apps.v1.Deployment(`istrav:deployment:${stack}:${plan}`, {
+const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${stack}:${plan}`, {
   spec: {
     selector: { matchLabels: appLabels },
     replicas: replicas,
@@ -108,7 +108,7 @@ const app = new kubernetes.apps.v1.Deployment(`istrav:deployment:${stack}:${plan
   },
 }, { provider })
 
-const appService = new kubernetes.core.v1.Service(`istrav:service:${stack}:${plan}`, {
+const appService = new kubernetes.core.v1.Service(`istrav-service-${stack}-${plan}`, {
   spec: {
     type: "LoadBalancer",
     selector: app.spec.template.metadata.labels,
