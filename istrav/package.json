@@ -6,6 +6,7 @@
     "dependencies": {
         "@pulumi/aws": "^3.36.0",
         "@pulumi/digitalocean": "^3.7.0",
+        "@pulumi/kubernetes": "^2.9.0",
         "@pulumi/linode": "^2.10.1",
         "@pulumi/pulumi": "^2.0.0"
     }
