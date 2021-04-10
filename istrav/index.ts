@@ -40,7 +40,7 @@ let AWS_SECRET_KEY = config.require("AWS_SECRET_KEY")
 
 let PORT = 3000
 const startupScript = `#!/bin/bash
-# version: 5
+# version: 6
 sudo yum install nginx -y
 sudo systemctl start nginx
 
@@ -65,9 +65,8 @@ sudo ufw enable
 sudo ufw status
 
 # install node.js
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-. ~/.nvm/nvm.sh
-nvm install node
+curl --silent --location https://rpm.nodesource.com/setup_14.x | sudo bash -
+sudo yum -y install nodejs
 node -e "console.log('Running Node.js ' + process.version)"
 
 # install node.js global deps
