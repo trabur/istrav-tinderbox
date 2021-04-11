@@ -10,7 +10,7 @@ let region = digitalocean.Regions.NYC3
 let instanceType
 let replicas
 let instanceCount = 1
-let versionLoadBalancer = "v0.5"
+let versionLoadBalancer = "v0.7"
 let versionApi = "v0.2"
 let versionHeadless = "v0.2"
 let versionAdmin = "v0.2"
