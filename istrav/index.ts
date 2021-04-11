@@ -114,32 +114,49 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
         }, {
           name: "istrav-api",
           image: `registry.hub.docker.com/istrav/istrav-api:${versionApi}`,
-          ports: [{ hostPort: 1337, containerPort: 3000 }],
+          ports: [{ hostPort: 1337, containerPort: 1337 }],
           env: [
-            { name: "PORT", value: "3000" },
+            { name: "PORT", value: "1337" },
+            { name: "NODE_ENV", value: "production" },
             { name: "AMQP_URI", value: AMQP_URI },
             { name: "MONGODB_URI", value: MONGODB_URI },
             { name: "POSTGRESQL_URI", value: POSTGRESQL_URI },
             { name: "SECRET", value: SECRET },
             { name: "AWS_ACCESS_KEY", value: AWS_ACCESS_KEY },
-            { name: "AWS_SECRET_KEY", value: AWS_SECRET_KEY },
+            { name: "AWS_SECRET_KEY", value: AWS_SECRET_KEY }
           ]
         }, {
           name: "istrav-headless",
           image: `registry.hub.docker.com/istrav/istrav-headless:${versionHeadless}`,
-          ports: [{ hostPort: 9999, containerPort: 3000 }]
+          ports: [{ hostPort: 9999, containerPort: 9999 }],
+          env: [
+            { name: "PORT", value: "9999" },
+            { name: "NODE_ENV", value: "production" }
+          ]
         }, {
           name: "istrav-admin",
           image: `registry.hub.docker.com/istrav/istrav-admin:${versionAdmin}`,
-          ports: [{ hostPort: 5280, containerPort: 3000 }]
+          ports: [{ hostPort: 5280, containerPort: 5280 }],
+          env: [
+            { name: "PORT", value: "5280" },
+            { name: "NODE_ENV", value: "production" }
+          ]
         }, {
           name: "istrav-marketing",
           image: `registry.hub.docker.com/istrav/istrav-marketing:${versionMarketing}`,
-          ports: [{ hostPort: 8000, containerPort: 3000 }]
+          ports: [{ hostPort: 8000, containerPort: 8000 }],
+          env: [
+            { name: "PORT", value: "8000" },
+            { name: "NODE_ENV", value: "production" }
+          ]
         }, {
           name: "istrav-storefront",
           image: `registry.hub.docker.com/istrav/istrav-storefront:${versionStorefront}`,
-          ports: [{ hostPort: 7000, containerPort: 3000 }]
+          ports: [{ hostPort: 7000, containerPort: 7000 }],
+          env: [
+            { name: "PORT", value: "7000" },
+            { name: "NODE_ENV", value: "production" }
+          ]
         }],
       },
     },
