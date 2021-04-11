@@ -91,7 +91,10 @@ export const kubeconfig = cluster.kubeConfigs[0].rawConfig
 
 const provider = new kubernetes.Provider(`istrav-k8s-${safeStackName}-${plan}`, { kubeconfig })
 
-const appLabels = { "app": "app-nginx" }
+const appLabels = { 
+  plan: plan,
+  stack: stack
+}
 const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName}-${plan}`, {
   spec: {
     selector: { matchLabels: appLabels },
@@ -112,7 +115,7 @@ const appService = new kubernetes.core.v1.Service(`istrav-service-${safeStackNam
   spec: {
     type: "LoadBalancer",
     selector: app.spec.template.metadata.labels,
-    ports: [{ port: 80 }],
+    ports: [{ port: 80, targetPort: 8080 }],
   },
 }, { provider })
 
