@@ -105,6 +105,14 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
         containers: [{
           name: "istrav-api",
           image: `registry.hub.docker.com/istrav/istrav-api:${version}`,
+          env: [
+            { name: "AMQP_URI", value: AMQP_URI },
+            { name: "MONGODB_URI", value: MONGODB_URI },
+            { name: "POSTGRESQL_URI", value: POSTGRESQL_URI },
+            { name: "SECRET", value: SECRET },
+            { name: "AWS_ACCESS_KEY", value: AWS_ACCESS_KEY },
+            { name: "AWS_SECRET_KEY", value: AWS_SECRET_KEY },
+          ]
         }],
       },
     },
