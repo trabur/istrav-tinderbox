@@ -105,10 +105,7 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
         containers: [{
           name: "istrav-load-balancer",
           image: `registry.hub.docker.com/istrav/istrav-load-balancer:${version}`,
-          ports: [{ containerPort: 8080 }],
-          env: [
-            { name: "PORT", value: "8080" },
-          ]
+          ports: [{ containerPort: 80 }]
         }, {
           name: "istrav-api",
           image: `registry.hub.docker.com/istrav/istrav-api:${version}`,
@@ -132,7 +129,7 @@ const appService = new kubernetes.core.v1.Service(`istrav-service-${safeStackNam
   spec: {
     type: "LoadBalancer",
     selector: app.spec.template.metadata.labels,
-    ports: [{ port: 80, targetPort: 8080 }],
+    ports: [{ port: 80, targetPort: 80 }],
   },
 }, { provider })
 
