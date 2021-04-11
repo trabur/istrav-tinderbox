@@ -104,7 +104,7 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
       spec: {
         containers: [{
           name: "istrav-api",
-          image: `istrav/istrav-api:${version}`,
+          image: `registry.hub.docker.com/istrav/istrav-api:${version}`,
         }],
       },
     },
