@@ -9,7 +9,7 @@ let plan: any = config.require("planId")
 let region = digitalocean.Regions.NYC3
 let instanceType
 let replicas
-let instanceCount = 2
+let instanceCount = 1
 
 // digital ocean:
 // Burstable performance from $5/mo
@@ -55,8 +55,8 @@ if (plan === 'black-hole-supermassive') {
     instanceType = digitalocean.DropletSlugs.DropletS1VCPU2GB  // $10/mo 1vCPU and 2GB Memory
     replicas = 1
   } else {
-    // plan === 'tardigrade'
-    instanceType = digitalocean.DropletSlugs.DropletS1VCPU1GB  // $5/mo 1vCPU and 1GB Memory
+    // default
+    instanceType = digitalocean.DropletSlugs.DropletS1VCPU2GB  // $10/mo 1vCPU and 2GB Memory
     replicas = 1
   }
 }
