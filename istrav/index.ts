@@ -10,6 +10,7 @@ let region = digitalocean.Regions.NYC3
 let instanceType
 let replicas
 let instanceCount = 1
+let version = "latest"
 
 // digital ocean:
 // Burstable performance from $5/mo
@@ -99,8 +100,8 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
       metadata: { labels: appLabels },
       spec: {
         containers: [{
-          name: "nginx",
-          image: "nginx",
+          name: "istrav-api",
+          image: `istrav/istrav-api:${version}`,
         }],
       },
     },
