@@ -48,14 +48,12 @@ if (plan === 'black-hole-supermassive') {
   } else if (plan === 'planet') {
     instanceType = digitalocean.DropletSlugs.DropletS2VCPU4GB  // $20/mo 2vCPU and 4GB Memory
     replicas = 2
-  } else if (plan === 'satellite') {
+  } else if (plan === 'astroid') {
     instanceType = digitalocean.DropletSlugs.DropletS2VCPU2GB  // $15/mo 2vCPU and 2GB Memory
     replicas = 2
-  } else if (plan === 'astroid') {
-    instanceType = digitalocean.DropletSlugs.DropletS1VCPU2GB  // $10/mo 1vCPU and 2GB Memory
-    replicas = 1
   } else {
     // default
+    // plan: tardigrade
     instanceType = digitalocean.DropletSlugs.DropletS1VCPU2GB  // $10/mo 1vCPU and 2GB Memory
     replicas = 1
   }
