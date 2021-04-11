@@ -11,11 +11,11 @@ let instanceType
 let replicas
 let instanceCount = 1
 let versionLoadBalancer = "v0.5"
-let versionApi = "v0.1"
-let versionHeadless = "v0.1"
-let versionAdmin = "v0.1"
-let versionMarketing = "v0.1"
-let versionStorefront = "v0.1"
+let versionApi = "v0.2"
+let versionHeadless = "v0.2"
+let versionAdmin = "v0.2"
+let versionMarketing = "v0.2"
+let versionStorefront = "v0.2"
 
 // digital ocean:
 // Burstable performance from $5/mo
