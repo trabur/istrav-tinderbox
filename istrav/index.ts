@@ -110,11 +110,11 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
         containers: [{
           name: "istrav-load-balancer",
           image: `registry.hub.docker.com/istrav/istrav-load-balancer:${versionLoadBalancer}`,
-          ports: [{ hostPort: 80, containerPort: 80 }]
+          ports: [{ containerPort: 80 }]
         }, {
           name: "istrav-api",
           image: `registry.hub.docker.com/istrav/istrav-api:${versionApi}`,
-          ports: [{ hostPort: 1337, containerPort: 1337 }],
+          ports: [{ containerPort: 1337 }],
           env: [
             { name: "PORT", value: "1337" },
             { name: "NODE_ENV", value: "production" },
@@ -128,7 +128,7 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
         }, {
           name: "istrav-headless",
           image: `registry.hub.docker.com/istrav/istrav-headless:${versionHeadless}`,
-          ports: [{ hostPort: 9999, containerPort: 9999 }],
+          ports: [{ containerPort: 9999 }],
           env: [
             { name: "PORT", value: "9999" },
             { name: "NODE_ENV", value: "production" }
@@ -136,7 +136,7 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
         }, {
           name: "istrav-admin",
           image: `registry.hub.docker.com/istrav/istrav-admin:${versionAdmin}`,
-          ports: [{ hostPort: 5280, containerPort: 5280 }],
+          ports: [{ containerPort: 5280 }],
           env: [
             { name: "PORT", value: "5280" },
             { name: "NODE_ENV", value: "production" }
@@ -144,7 +144,7 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
         }, {
           name: "istrav-marketing",
           image: `registry.hub.docker.com/istrav/istrav-marketing:${versionMarketing}`,
-          ports: [{ hostPort: 8000, containerPort: 8000 }],
+          ports: [{ containerPort: 8000 }],
           env: [
             { name: "PORT", value: "8000" },
             { name: "NODE_ENV", value: "production" }
@@ -152,7 +152,7 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
         }, {
           name: "istrav-storefront",
           image: `registry.hub.docker.com/istrav/istrav-storefront:${versionStorefront}`,
-          ports: [{ hostPort: 7000, containerPort: 7000 }],
+          ports: [{ containerPort: 7000 }],
           env: [
             { name: "PORT", value: "7000" },
             { name: "NODE_ENV", value: "production" }
