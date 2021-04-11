@@ -103,9 +103,18 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
       metadata: { labels: appLabels },
       spec: {
         containers: [{
+          name: "istrav-load-balancer",
+          image: `registry.hub.docker.com/istrav/istrav-load-balancer:${version}`,
+          ports: [{ containerPort: 8080 }],
+          env: [
+            { name: "PORT", value: "8080" },
+          ]
+        }, {
           name: "istrav-api",
           image: `registry.hub.docker.com/istrav/istrav-api:${version}`,
+          ports: [{ containerPort: 3000 }],
           env: [
+            { name: "PORT", value: "3000" },
             { name: "AMQP_URI", value: AMQP_URI },
             { name: "MONGODB_URI", value: MONGODB_URI },
             { name: "POSTGRESQL_URI", value: POSTGRESQL_URI },
