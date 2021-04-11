@@ -10,7 +10,8 @@ let region = digitalocean.Regions.NYC3
 let instanceType
 let replicas
 let instanceCount = 1
-let version = "latest"
+let versionLoadBalancer = "v0.4"
+let versionApi = "latest"
 
 // digital ocean:
 // Burstable performance from $5/mo
@@ -104,11 +105,11 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
       spec: {
         containers: [{
           name: "istrav-load-balancer",
-          image: `registry.hub.docker.com/istrav/istrav-load-balancer:${version}`,
+          image: `registry.hub.docker.com/istrav/istrav-load-balancer:${versionLoadBalancer}`,
           ports: [{ containerPort: 80 }]
         }, {
           name: "istrav-api",
-          image: `registry.hub.docker.com/istrav/istrav-api:${version}`,
+          image: `registry.hub.docker.com/istrav/istrav-api:${versionApi}`,
           ports: [{ containerPort: 3000 }],
           env: [
             { name: "PORT", value: "3000" },
