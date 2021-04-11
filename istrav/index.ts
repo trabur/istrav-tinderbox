@@ -114,7 +114,7 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
         }, {
           name: "istrav-api",
           image: `registry.hub.docker.com/istrav/istrav-api:${versionApi}`,
-          ports: [{ hostPort: 3000, containerPort: 1337 }],
+          ports: [{ hostPort: 1337, containerPort: 3000 }],
           env: [
             { name: "PORT", value: "3000" },
             { name: "AMQP_URI", value: AMQP_URI },
@@ -127,19 +127,19 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
         }, {
           name: "istrav-headless",
           image: `registry.hub.docker.com/istrav/istrav-headless:${versionHeadless}`,
-          ports: [{ hostPort: 3000, containerPort: 9999 }]
+          ports: [{ hostPort: 9999, containerPort: 3000 }]
         }, {
           name: "istrav-admin",
           image: `registry.hub.docker.com/istrav/istrav-admin:${versionAdmin}`,
-          ports: [{ hostPort: 3000, containerPort: 5280 }]
+          ports: [{ hostPort: 5280, containerPort: 3000 }]
         }, {
           name: "istrav-marketing",
           image: `registry.hub.docker.com/istrav/istrav-marketing:${versionMarketing}`,
-          ports: [{ hostPort: 3000, containerPort: 8000 }]
+          ports: [{ hostPort: 8000, containerPort: 3000 }]
         }, {
           name: "istrav-storefront",
           image: `registry.hub.docker.com/istrav/istrav-storefront:${versionStorefront}`,
-          ports: [{ hostPort: 3000, containerPort: 7000 }]
+          ports: [{ hostPort: 7000, containerPort: 3000 }]
         }],
       },
     },
