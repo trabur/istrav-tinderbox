@@ -11,7 +11,11 @@ let instanceType
 let replicas
 let instanceCount = 1
 let versionLoadBalancer = "v0.5"
-let versionApi = "latest"
+let versionApi = "v0.1"
+let versionHeadless = "v0.1"
+let versionAdmin = "v0.1"
+let versionMarketing = "v0.1"
+let versionStorefront = "v0.1"
 
 // digital ocean:
 // Burstable performance from $5/mo
@@ -106,11 +110,11 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
         containers: [{
           name: "istrav-load-balancer",
           image: `registry.hub.docker.com/istrav/istrav-load-balancer:${versionLoadBalancer}`,
-          ports: [{ containerPort: 80 }]
+          ports: [{ hostPort: 80, containerPort: 80 }]
         }, {
           name: "istrav-api",
           image: `registry.hub.docker.com/istrav/istrav-api:${versionApi}`,
-          ports: [{ containerPort: 3000 }],
+          ports: [{ hostPort: 3000, containerPort: 1337 }],
           env: [
             { name: "PORT", value: "3000" },
             { name: "AMQP_URI", value: AMQP_URI },
@@ -120,6 +124,22 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
             { name: "AWS_ACCESS_KEY", value: AWS_ACCESS_KEY },
             { name: "AWS_SECRET_KEY", value: AWS_SECRET_KEY },
           ]
+        }, {
+          name: "istrav-headless",
+          image: `registry.hub.docker.com/istrav/istrav-headless:${versionHeadless}`,
+          ports: [{ hostPort: 3000, containerPort: 9999 }]
+        }, {
+          name: "istrav-admin",
+          image: `registry.hub.docker.com/istrav/istrav-admin:${versionAdmin}`,
+          ports: [{ hostPort: 3000, containerPort: 5280 }]
+        }, {
+          name: "istrav-marketing",
+          image: `registry.hub.docker.com/istrav/istrav-marketing:${versionMarketing}`,
+          ports: [{ hostPort: 3000, containerPort: 8000 }]
+        }, {
+          name: "istrav-storefront",
+          image: `registry.hub.docker.com/istrav/istrav-storefront:${versionStorefront}`,
+          ports: [{ hostPort: 3000, containerPort: 7000 }]
         }],
       },
     },
