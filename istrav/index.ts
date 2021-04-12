@@ -161,7 +161,7 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           ]
         }, {
           name: "istrav-channel",
-          image: `registry.hub.docker.com/istrav/istrav-storefront:${versionChannel}`,
+          image: `registry.hub.docker.com/istrav/istrav-channel:${versionChannel}`,
           ports: [{ containerPort: 6000 }],
           env: [
             { name: "PORT", value: "6000" },
@@ -169,7 +169,7 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           ]
         }, {
           name: "istrav-forum",
-          image: `registry.hub.docker.com/istrav/istrav-storefront:${versionForum}`,
+          image: `registry.hub.docker.com/istrav/istrav-forum:${versionForum}`,
           ports: [{ containerPort: 5000 }],
           env: [
             { name: "PORT", value: "5000" },
