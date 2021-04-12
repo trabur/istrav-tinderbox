@@ -16,7 +16,7 @@ let versionHeadless = "v0.2"
 let versionAdmin = "v0.2"
 let versionMarketing = "v0.2"
 let versionStorefront = "v0.2"
-let versionChannel = "v0.1"
+let versionChannel = "v0.2"
 let versionForum = "v0.1"
 
 // digital ocean:
