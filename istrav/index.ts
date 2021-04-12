@@ -16,6 +16,8 @@ let versionHeadless = "v0.2"
 let versionAdmin = "v0.2"
 let versionMarketing = "v0.2"
 let versionStorefront = "v0.2"
+let versionChannel = "v0.1"
+let versionForum = "v0.1"
 
 // digital ocean:
 // Burstable performance from $5/mo
@@ -155,6 +157,22 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           ports: [{ containerPort: 7000 }],
           env: [
             { name: "PORT", value: "7000" },
+            { name: "NODE_ENV", value: "production" }
+          ]
+        }, {
+          name: "istrav-channel",
+          image: `registry.hub.docker.com/istrav/istrav-storefront:${versionChannel}`,
+          ports: [{ containerPort: 6000 }],
+          env: [
+            { name: "PORT", value: "6000" },
+            { name: "NODE_ENV", value: "production" }
+          ]
+        }, {
+          name: "istrav-forum",
+          image: `registry.hub.docker.com/istrav/istrav-storefront:${versionForum}`,
+          ports: [{ containerPort: 5000 }],
+          env: [
+            { name: "PORT", value: "5000" },
             { name: "NODE_ENV", value: "production" }
           ]
         }],
