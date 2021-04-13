@@ -10,14 +10,14 @@ on:
         description: 'Plan Id'
         required: true
         default: 'tardigrade'
-      AMQP_URI:
-        description: 'AMQP_URI'
+      API_URI:
+        description: 'API_URI'
         required: true
-        default: ''
-      MONGODB_URI:
-        description: 'MONGODB_URI'
+        default: 'https://hacktracks.org'
+      HEADLESS_URI:
+        description: 'HEADLESS_URI'
         required: true
-        default: ''
+        default: 'https://farmerless.com'
       POSTGRESQL_URI:
         description: 'POSTGRESQL_URI'
         required: true
@@ -56,8 +56,8 @@ jobs:
           pulumi stack select ${{ github.event.inputs.stackId }}
           pulumi config set --plaintext istrav:planId ${{ github.event.inputs.planId }}
           pulumi config set --plaintext istrav:stackId ${{ github.event.inputs.stackId }}
-          pulumi config set --plaintext istrav:AMQP_URI ${{ github.event.inputs.AMQP_URI }}
-          pulumi config set --plaintext istrav:MONGODB_URI ${{ github.event.inputs.MONGODB_URI }}
+          pulumi config set --plaintext istrav:API_URI ${{ github.event.inputs.API_URI }}
+          pulumi config set --plaintext istrav:HEADLESS_URI ${{ github.event.inputs.HEADLESS_URI }}
           pulumi config set --plaintext istrav:POSTGRESQL_URI ${{ github.event.inputs.POSTGRESQL_URI }}
           pulumi config set --plaintext istrav:SECRET ${{ github.event.inputs.SECRET }}
           pulumi config set --plaintext istrav:AWS_ACCESS_KEY ${{ github.event.inputs.AWS_ACCESS_KEY }}

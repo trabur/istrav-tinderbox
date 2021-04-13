@@ -75,8 +75,8 @@ console.log('istrav:instanceCount', instanceCount)
 console.log('istrav:instanceType', instanceType)
 
 // container enviornment variables
-let AMQP_URI = config.require("AMQP_URI")
-let MONGODB_URI = config.require("MONGODB_URI")
+let API_URI = config.require("API_URI")
+let HEADLESS_URI = config.require("HEADLESS_URI")
 let POSTGRESQL_URI = config.require("POSTGRESQL_URI")
 let SECRET = config.require("SECRET")
 let AWS_ACCESS_KEY = config.require("AWS_ACCESS_KEY")
@@ -120,8 +120,6 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           env: [
             { name: "PORT", value: "1337" },
             { name: "NODE_ENV", value: "production" },
-            { name: "AMQP_URI", value: AMQP_URI },
-            { name: "MONGODB_URI", value: MONGODB_URI },
             { name: "POSTGRESQL_URI", value: POSTGRESQL_URI },
             { name: "SECRET", value: SECRET },
             { name: "AWS_ACCESS_KEY", value: AWS_ACCESS_KEY },
@@ -133,7 +131,8 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           ports: [{ containerPort: 9999 }],
           env: [
             { name: "PORT", value: "9999" },
-            { name: "NODE_ENV", value: "production" }
+            { name: "NODE_ENV", value: "production" },
+            { name: "API_URI", value: API_URI }
           ]
         }, {
           name: "istrav-admin",
@@ -141,7 +140,9 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           ports: [{ containerPort: 5280 }],
           env: [
             { name: "PORT", value: "5280" },
-            { name: "NODE_ENV", value: "production" }
+            { name: "NODE_ENV", value: "production" },
+            { name: "API_URI", value: API_URI },
+            { name: "HEADLESS_URI", value: HEADLESS_URI }
           ]
         }, {
           name: "istrav-marketing",
@@ -149,7 +150,9 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           ports: [{ containerPort: 8000 }],
           env: [
             { name: "PORT", value: "8000" },
-            { name: "NODE_ENV", value: "production" }
+            { name: "NODE_ENV", value: "production" },
+            { name: "API_URI", value: API_URI },
+            { name: "HEADLESS_URI", value: HEADLESS_URI }
           ]
         }, {
           name: "istrav-storefront",
@@ -157,7 +160,9 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           ports: [{ containerPort: 7000 }],
           env: [
             { name: "PORT", value: "7000" },
-            { name: "NODE_ENV", value: "production" }
+            { name: "NODE_ENV", value: "production" },
+            { name: "API_URI", value: API_URI },
+            { name: "HEADLESS_URI", value: HEADLESS_URI }
           ]
         }, {
           name: "istrav-channel",
@@ -165,7 +170,9 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           ports: [{ containerPort: 6000 }],
           env: [
             { name: "PORT", value: "6000" },
-            { name: "NODE_ENV", value: "production" }
+            { name: "NODE_ENV", value: "production" },
+            { name: "API_URI", value: API_URI },
+            { name: "HEADLESS_URI", value: HEADLESS_URI }
           ]
         }, {
           name: "istrav-forum",
@@ -173,7 +180,9 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           ports: [{ containerPort: 5000 }],
           env: [
             { name: "PORT", value: "5000" },
-            { name: "NODE_ENV", value: "production" }
+            { name: "NODE_ENV", value: "production" },
+            { name: "API_URI", value: API_URI },
+            { name: "HEADLESS_URI", value: HEADLESS_URI }
           ]
         }],
       },
