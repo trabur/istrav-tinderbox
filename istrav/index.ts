@@ -75,8 +75,8 @@ console.log('istrav:instanceCount', instanceCount)
 console.log('istrav:instanceType', instanceType)
 
 // container enviornment variables
-let API_URI = config.require("API_URI")
-let HEADLESS_URI = config.require("HEADLESS_URI")
+let ACK_DOMAIN = config.require("ACK_DOMAIN")
+let HEADLESS_DOMAIN = config.require("HEADLESS_DOMAIN")
 let POSTGRESQL_URI = config.require("POSTGRESQL_URI")
 let SECRET = config.require("SECRET")
 let AWS_ACCESS_KEY = config.require("AWS_ACCESS_KEY")
@@ -123,7 +123,8 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
             { name: "POSTGRESQL_URI", value: POSTGRESQL_URI },
             { name: "SECRET", value: SECRET },
             { name: "AWS_ACCESS_KEY", value: AWS_ACCESS_KEY },
-            { name: "AWS_SECRET_KEY", value: AWS_SECRET_KEY }
+            { name: "AWS_SECRET_KEY", value: AWS_SECRET_KEY },
+            { name: "IO_URI", value: `https://io.${ACK_DOMAIN}` }
           ]
         }, {
           name: "istrav-headless",
@@ -132,7 +133,8 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           env: [
             { name: "PORT", value: "9999" },
             { name: "NODE_ENV", value: "production" },
-            { name: "API_URI", value: API_URI }
+            { name: "API_URI", value: `https://api.${ACK_DOMAIN}` },
+            { name: "IO_URI", value: `https://io.${ACK_DOMAIN}` }
           ]
         }, {
           name: "istrav-admin",
@@ -141,8 +143,9 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           env: [
             { name: "PORT", value: "5280" },
             { name: "NODE_ENV", value: "production" },
-            { name: "API_URI", value: API_URI },
-            { name: "HEADLESS_URI", value: HEADLESS_URI }
+            { name: "API_URI", value: `https://api.${ACK_DOMAIN}` },
+            { name: "IO_URI", value: `https://io.${ACK_DOMAIN}` },
+            { name: "HEADLESS_URI", value: `https://${HEADLESS_DOMAIN}` }
           ]
         }, {
           name: "istrav-marketing",
@@ -151,8 +154,9 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           env: [
             { name: "PORT", value: "8000" },
             { name: "NODE_ENV", value: "production" },
-            { name: "API_URI", value: API_URI },
-            { name: "HEADLESS_URI", value: HEADLESS_URI }
+            { name: "API_URI", value: `https://api.${ACK_DOMAIN}` },
+            { name: "IO_URI", value: `https://io.${ACK_DOMAIN}` },
+            { name: "HEADLESS_URI", value: `https://${HEADLESS_DOMAIN}` }
           ]
         }, {
           name: "istrav-storefront",
@@ -161,8 +165,9 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           env: [
             { name: "PORT", value: "7000" },
             { name: "NODE_ENV", value: "production" },
-            { name: "API_URI", value: API_URI },
-            { name: "HEADLESS_URI", value: HEADLESS_URI }
+            { name: "API_URI", value: `https://api.${ACK_DOMAIN}` },
+            { name: "IO_URI", value: `https://io.${ACK_DOMAIN}` },
+            { name: "HEADLESS_URI", value: `https://${HEADLESS_DOMAIN}` }
           ]
         }, {
           name: "istrav-channel",
@@ -171,8 +176,9 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           env: [
             { name: "PORT", value: "6000" },
             { name: "NODE_ENV", value: "production" },
-            { name: "API_URI", value: API_URI },
-            { name: "HEADLESS_URI", value: HEADLESS_URI }
+            { name: "API_URI", value: `https://api.${ACK_DOMAIN}` },
+            { name: "IO_URI", value: `https://io.${ACK_DOMAIN}` },
+            { name: "HEADLESS_URI", value: `https://${HEADLESS_DOMAIN}` }
           ]
         }, {
           name: "istrav-forum",
@@ -181,8 +187,9 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           env: [
             { name: "PORT", value: "5000" },
             { name: "NODE_ENV", value: "production" },
-            { name: "API_URI", value: API_URI },
-            { name: "HEADLESS_URI", value: HEADLESS_URI }
+            { name: "API_URI", value: `https://api.${ACK_DOMAIN}` },
+            { name: "IO_URI", value: `https://io.${ACK_DOMAIN}` },
+            { name: "HEADLESS_URI", value: `https://${HEADLESS_DOMAIN}` }
           ]
         }],
       },

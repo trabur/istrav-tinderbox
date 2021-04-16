@@ -17,8 +17,8 @@ async function main () {
     inputs: {
       stackId: 'istrav.com',
       planId: 'tardigrade',
-      AMQP_URI: process.env.AMQP_URI,
-      MONGODB_URI: process.env.MONGODB_URI,
+      ACK_DOMAIN: 'hacktracks.org',
+      HEADLESS_DOMAIN: 'farmerless.com',
       POSTGRESQL_URI: process.env.POSTGRESQL_URI,
       SECRET: process.env.SECRET,
       AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY,

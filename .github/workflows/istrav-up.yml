@@ -10,14 +10,14 @@ on:
         description: 'Plan Id'
         required: true
         default: 'tardigrade'
-      API_URI:
-        description: 'API_URI'
+      ACK_DOMAIN:
+        description: 'ACK_DOMAIN'
         required: true
-        default: 'https://hacktracks.org'
-      HEADLESS_URI:
-        description: 'HEADLESS_URI'
+        default: 'hacktracks.org'
+      HEADLESS_DOMAIN:
+        description: 'HEADLESS_DOMAIN'
         required: true
-        default: 'https://farmerless.com'
+        default: 'farmerless.com'
       POSTGRESQL_URI:
         description: 'POSTGRESQL_URI'
         required: true
