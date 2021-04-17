@@ -86,7 +86,7 @@ let AWS_SECRET_KEY = config.require("AWS_SECRET_KEY")
 let safeStackName = stack.replace(".", "-dot-")
 const cluster = new digitalocean.KubernetesCluster(`istrav-cluster-${safeStackName}-${plan}`, {
   region: region,
-  version: "1.20.2", // $ doctl kubernetes options versions
+  version: "1.20.2-do.0", // $ doctl kubernetes options versions
   nodePool: {
     name: "default",
     size: instanceType,
