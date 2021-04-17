@@ -11,11 +11,11 @@ let instanceType
 let replicas
 let instanceCount = 1
 let versionLoadBalancer = "v0.7"
-let versionApi = "v0.2"
-let versionHeadless = "v0.2"
-let versionAdmin = "v0.2"
-let versionMarketing = "v0.2"
-let versionStorefront = "v0.2"
+let versionApi = "v0.4"
+let versionHeadless = "v0.3"
+let versionAdmin = "v0.3"
+let versionMarketing = "v0.3"
+let versionStorefront = "v0.3"
 let versionChannel = "v0.2"
 let versionForum = "v0.1"
 
