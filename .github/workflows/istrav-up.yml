@@ -56,8 +56,8 @@ jobs:
           pulumi stack select ${{ github.event.inputs.stackId }}
           pulumi config set --plaintext istrav:planId ${{ github.event.inputs.planId }}
           pulumi config set --plaintext istrav:stackId ${{ github.event.inputs.stackId }}
-          pulumi config set --plaintext istrav:API_URI ${{ github.event.inputs.API_URI }}
-          pulumi config set --plaintext istrav:HEADLESS_URI ${{ github.event.inputs.HEADLESS_URI }}
+          pulumi config set --plaintext istrav:ACK_DOMAIN ${{ github.event.inputs.ACK_DOMAIN }}
+          pulumi config set --plaintext istrav:HEADLESS_DOMAIN ${{ github.event.inputs.HEADLESS_DOMAIN }}
           pulumi config set --plaintext istrav:POSTGRESQL_URI ${{ github.event.inputs.POSTGRESQL_URI }}
           pulumi config set --plaintext istrav:SECRET ${{ github.event.inputs.SECRET }}
           pulumi config set --plaintext istrav:AWS_ACCESS_KEY ${{ github.event.inputs.AWS_ACCESS_KEY }}
