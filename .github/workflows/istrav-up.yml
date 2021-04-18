@@ -10,6 +10,10 @@ on:
         description: 'Plan Id'
         required: true
         default: 'tardigrade'
+      VERSION:
+        description: 'Version'
+        required: true
+        default: 'v0.10'
       ACK_DOMAIN:
         description: 'ACK_DOMAIN'
         required: true
@@ -56,6 +60,7 @@ jobs:
           pulumi stack select ${{ github.event.inputs.stackId }}
           pulumi config set --plaintext istrav:planId ${{ github.event.inputs.planId }}
           pulumi config set --plaintext istrav:stackId ${{ github.event.inputs.stackId }}
+          pulumi config set --plaintext istrav:VERSION ${{ github.event.inputs.VERSION }}
           pulumi config set --plaintext istrav:ACK_DOMAIN ${{ github.event.inputs.ACK_DOMAIN }}
           pulumi config set --plaintext istrav:HEADLESS_DOMAIN ${{ github.event.inputs.HEADLESS_DOMAIN }}
           pulumi config set --plaintext istrav:POSTGRESQL_URI ${{ github.event.inputs.POSTGRESQL_URI }}

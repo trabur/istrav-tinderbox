@@ -6,18 +6,19 @@ import * as kubernetes from "@pulumi/kubernetes";
 let config = new pulumi.Config()
 let stack: any = config.require("stackId") 
 let plan: any = config.require("planId") 
+let version: any = config.require("VERSION")
 let region = digitalocean.Regions.NYC3
 let instanceType
 let replicas
 let instanceCount = 1
-let versionLoadBalancer = "v0.7"
-let versionApi = "v0.4"
-let versionHeadless = "v0.4"
-let versionAdmin = "v0.4"
-let versionMarketing = "v0.4"
-let versionStorefront = "v0.4"
-let versionChannel = "v0.3"
-let versionForum = "v0.2"
+let versionLoadBalancer = version // example: "v0.10"
+let versionApi = version
+let versionHeadless = version
+let versionAdmin = version
+let versionMarketing = version
+let versionStorefront = version
+let versionChannel = version
+let versionForum = version
 
 // digital ocean:
 // Burstable performance from $5/mo
