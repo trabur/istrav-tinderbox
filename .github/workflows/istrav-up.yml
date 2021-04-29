@@ -69,7 +69,7 @@ jobs:
           pulumi config set --plaintext istrav:AWS_SECRET_KEY ${{ github.event.inputs.AWS_SECRET_KEY }}
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-      - uses: pulumi/actions@v2
+      - uses: pulumi/actions@v3
         with:
           work-dir: ./istrav
           command: up

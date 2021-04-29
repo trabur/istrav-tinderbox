@@ -16,14 +16,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install pulumi
-        uses: pulumi/action-install-pulumi-cli@v1.0.1
+        uses: pulumi/action-install-pulumi-cli@v1
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
       - name: Install 
         run: npm install
-      - uses: pulumi/actions@v2
+      - uses: pulumi/actions@v3
         with:
           work-dir: ./istrav
           command: destroy
