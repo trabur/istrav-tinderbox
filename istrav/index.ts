@@ -173,9 +173,9 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
         }, {
           name: "istrav-channel",
           image: `registry.hub.docker.com/istrav/istrav-channel:${versionChannel}`,
-          ports: [{ containerPort: 6000 }],
+          ports: [{ containerPort: 8888 }],
           env: [
-            { name: "PORT", value: "6000" },
+            { name: "PORT", value: "8888" },
             { name: "NODE_ENV", value: "production" },
             { name: "API_URI", value: `https://api.${ACK_DOMAIN}` },
             { name: "IO_URI", value: `https://io.${ACK_DOMAIN}` },
