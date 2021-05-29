@@ -144,9 +144,9 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           env: [
             { name: "PORT", value: "5280" },
             { name: "NODE_ENV", value: "production" },
-            { name: "API_URI", value: `https://api.${ACK_DOMAIN}` },
-            { name: "IO_URI", value: `https://io.${ACK_DOMAIN}` },
-            { name: "HEADLESS_URI", value: `https://${HEADLESS_DOMAIN}` }
+            { name: "VITE_API_URI", value: `https://api.${ACK_DOMAIN}` },
+            { name: "VITE_IO_URI", value: `https://io.${ACK_DOMAIN}` },
+            { name: "VITE_HEADLESS_URI", value: `https://${HEADLESS_DOMAIN}` }
           ]
         }, {
           name: "istrav-marketing",
@@ -155,9 +155,9 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           env: [
             { name: "PORT", value: "8000" },
             { name: "NODE_ENV", value: "production" },
-            { name: "API_URI", value: `https://api.${ACK_DOMAIN}` },
-            { name: "IO_URI", value: `https://io.${ACK_DOMAIN}` },
-            { name: "HEADLESS_URI", value: `https://${HEADLESS_DOMAIN}` }
+            { name: "VITE_API_URI", value: `https://api.${ACK_DOMAIN}` },
+            { name: "VITE_IO_URI", value: `https://io.${ACK_DOMAIN}` },
+            { name: "VITE_HEADLESS_URI", value: `https://${HEADLESS_DOMAIN}` }
           ]
         }, {
           name: "istrav-storefront",
@@ -166,9 +166,9 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           env: [
             { name: "PORT", value: "7000" },
             { name: "NODE_ENV", value: "production" },
-            { name: "API_URI", value: `https://api.${ACK_DOMAIN}` },
-            { name: "IO_URI", value: `https://io.${ACK_DOMAIN}` },
-            { name: "HEADLESS_URI", value: `https://${HEADLESS_DOMAIN}` }
+            { name: "VITE_API_URI", value: `https://api.${ACK_DOMAIN}` },
+            { name: "VITE_IO_URI", value: `https://io.${ACK_DOMAIN}` },
+            { name: "VITE_HEADLESS_URI", value: `https://${HEADLESS_DOMAIN}` }
           ]
         }, {
           name: "istrav-channel",
@@ -177,9 +177,9 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           env: [
             { name: "PORT", value: "8888" },
             { name: "NODE_ENV", value: "production" },
-            { name: "API_URI", value: `https://api.${ACK_DOMAIN}` },
-            { name: "IO_URI", value: `https://io.${ACK_DOMAIN}` },
-            { name: "HEADLESS_URI", value: `https://${HEADLESS_DOMAIN}` }
+            { name: "VITE_API_URI", value: `https://api.${ACK_DOMAIN}` },
+            { name: "VITE_IO_URI", value: `https://io.${ACK_DOMAIN}` },
+            { name: "VITE_HEADLESS_URI", value: `https://${HEADLESS_DOMAIN}` }
           ]
         }, {
           name: "istrav-forum",
@@ -188,9 +188,9 @@ const app = new kubernetes.apps.v1.Deployment(`istrav-deployment-${safeStackName
           env: [
             { name: "PORT", value: "5000" },
             { name: "NODE_ENV", value: "production" },
-            { name: "API_URI", value: `https://api.${ACK_DOMAIN}` },
-            { name: "IO_URI", value: `https://io.${ACK_DOMAIN}` },
-            { name: "HEADLESS_URI", value: `https://${HEADLESS_DOMAIN}` }
+            { name: "VITE_API_URI", value: `https://api.${ACK_DOMAIN}` },
+            { name: "VITE_IO_URI", value: `https://io.${ACK_DOMAIN}` },
+            { name: "VITE_HEADLESS_URI", value: `https://${HEADLESS_DOMAIN}` }
           ]
         }],
       },
